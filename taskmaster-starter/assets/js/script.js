@@ -33,18 +33,25 @@ var loadTasks = function() {
 
   // loop over object properties
   $.each(tasks, function(list, arr) {
-    console.log(list, arr);
     // then loop over sub-array
     arr.forEach(function(task) {
       createTask(task.text, task.date, list);
     });
   });
 };
-
+ 
 var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+$(".list-group").on("click", "p", function() {
+  // get the textarea's current value/text
+  var text = $(this)
+  var textInput = $("<textarea>")
+  .addclass("form-control")
+  .val(text);
+  $(this).replaceWith(textInput);
+});
 
 
 
@@ -90,7 +97,28 @@ $("#remove-tasks").on("click", function() {
   }
   saveTasks();
 });
-
+ // sortable //
+ $(".card .list-group").sortable({
+  connectWith: $(".card .list-group"),
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activate: function(event) {
+    console.log("activate", this);
+  },
+  deactivate: function(event) {
+    console.log("deactivate", this);
+  },
+  over: function(event) {
+    console.log("over", event.target);
+  },
+  out: function(event) {
+    console.log("out", event.target);
+  },
+  update: function(event) {
+    console.log("update", this);
+  }
+});
 // load tasks for the first time
 loadTasks();
 
